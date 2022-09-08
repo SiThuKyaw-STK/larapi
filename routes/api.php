@@ -20,5 +20,7 @@ use App\Http\Controllers\Api\PhotoApiController;
 //    return $request->user();
 //});
 
-Route::apiResource('products',ProductApiController::class);
-Route::apiResource('photos',PhotoApiController::class);
+Route::middleware('controlProducts')->group(function (){
+    Route::apiResource('products',ProductApiController::class);
+    Route::apiResource('photos',PhotoApiController::class);
+});

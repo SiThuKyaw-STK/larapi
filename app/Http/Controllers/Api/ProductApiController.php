@@ -16,7 +16,9 @@ class ProductApiController extends Controller
      */
     public function index()
     {
-        return response()->json(Product::all());
+        $product = Product::latest('id')->paginate(10);
+
+        return response()->json($product);
     }
 
     /**
