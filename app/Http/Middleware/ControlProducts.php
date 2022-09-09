@@ -16,7 +16,7 @@ class ControlProducts
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->key != 'asdffdsa'){
+        if ($request->header('key') != 'asdffdsa'){
             return response()->json(["message"=>"key is require"]);
         }
         return $next($request);
