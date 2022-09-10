@@ -29,11 +29,22 @@ class ApiAuthController extends Controller
         }
         return response()->json(["message"=>"User not found"],404);
     }
-    public function login(){
+    public function login(Request $request){
 
+        $request->validate([
+            "email"=>"required",
+            "password"=>"required|min:8"
+        ]);
+
+        if (Auth::attempt($request->only(['email','password']))){
+            $token = Auth::user()->createToken("phone")->plainTextToken;
+            return response()->json($token);
+        }
+        return response()->json(["message"=>"User not found"],404);
     }
     public function logout(){
-
+         Auth::user()->currentAccessToken()->delete();
+         return response()->json(["message"=>"logout"],204);
     }
     public function tokens(){
 
