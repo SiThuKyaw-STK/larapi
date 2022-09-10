@@ -46,7 +46,13 @@ class ApiAuthController extends Controller
          Auth::user()->currentAccessToken()->delete();
          return response()->json(["message"=>"logout"],204);
     }
-    public function tokens(){
 
+    public function logoutAll(){
+        Auth::user()->tokens()->delete();
+        return response()->json(["message"=>"logout"],204);
+    }
+
+    public function tokens(){
+        return Auth::user()->tokens;
     }
 }

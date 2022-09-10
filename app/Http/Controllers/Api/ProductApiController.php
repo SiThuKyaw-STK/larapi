@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 use App\Models\Photo;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductApiController extends Controller
 {
@@ -16,9 +18,10 @@ class ProductApiController extends Controller
      */
     public function index()
     {
-        $product = Product::latest('id')->paginate(10);
+        $products = Product::latest('id')->paginate(10);
 
-        return response()->json($product);
+//        return response()->json($product);
+        return ProductResource::collection($products);
     }
 
     /**
@@ -40,7 +43,8 @@ class ProductApiController extends Controller
        $product = Product::create([
             'name'=>$request->name,
             'price'=>$request->price,
-            'stock'=>$request->stock
+            'stock'=>$request->stock,
+           'user_id'=>Auth::id(),
         ]);
 
        $photos = [];
@@ -66,7 +70,8 @@ class ProductApiController extends Controller
         if (is_null($product)){
             return response()->json(["message"=>"Product is not found."],404);
         }
-        return response()->json($product);
+//        return response()->json($product);
+        return new ProductResource($product);
     }
 
     /**
